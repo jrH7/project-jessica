@@ -1,0 +1,21 @@
+{
+  "name": "project-jess",
+  "version": "1.0.0",
+  "description": "Making things simple!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "author": "Sanchit Handa",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "request": "^2.81.0",
+    "require": "^2.4.20"
+  }
+}
