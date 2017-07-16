@@ -10,16 +10,15 @@ var downloaderConstants = {
   makeDirectoryCommand:'mkdir -p ~/Desktop/Songs/',
   changeDirectoryCommand:'cd ~/Desktop/Songs/',
   userFolderName:'sanchit',
-  downloadCommand:'youtube-dl --extract-audio --audio-format mp3 '
+  downloadCommand:'youtube-dl --download-archive -----ARCHIVE------.txt --no-post-overwrites -ciwx --audio-format mp3 -o "%(title)s.%(ext)s" '
 };
 exports.downloadVideo = function(req,res){
   var utility = require('../common/utility');
   var status = validateRequest(req);
 
-  //Send response to slack for command received successfully
   if("success" == status){
     console.log("downloadController.js | downloadVideo() | download start for URL | " +req.body.text);
-    status = downloadVideoFromCommand(req.body.text);
+    status = this.downloadVideoFromCommand(req.body.text,{});
     if("success" == status){
       console.log("downloadController.js | downloadVideo() | download success for URL | " +req.body.text);
       utility.sendResponseToRedirectURL(req.body.response_url,"jessica executed /download "+req.body.text);
@@ -79,16 +78,20 @@ function validateURL(url)
   return "success";
 }
 
-function downloadVideoFromCommand(url)
+exports.downloadVideoFromCommand = function(url,responseObj)
 {
-  try {
+  if(!url)
+    return "downloadController.js | downloadVideoFromCommand() | empty url ";
+
+  try
+  {
     var execSync = require('child_process').execSync;
 
     var cmd = downloaderConstants.makeDirectoryCommand + downloaderConstants.userFolderName;
     cmd = cmd + ";"+ downloaderConstants.changeDirectoryCommand + downloaderConstants.userFolderName;
     cmd = cmd +";"+downloaderConstants.downloadCommand + url;
 
-    response = execSync(cmd);
+    responseObj.sysOut = execSync(cmd);
   } catch (e) {
     return "downloadController.js | downloadVideoFromCommand() | download failed | " + e;
   }

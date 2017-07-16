@@ -11,3 +11,7 @@ routes(app);
 
 app.listen(port);
 console.log('server.js | global() | jessica listening on port ' +port)
+
+//Start server routines
+var indexController = require('./api/controllers/indexController')
+indexController.start();

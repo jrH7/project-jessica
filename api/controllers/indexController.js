@@ -1,10 +1,16 @@
 'use strict';
 
+//Common API to forward all requests asynch
 exports.forward = function(req,res){
-  //Start a thread
   setTimeout(parseRequest, 0, req, res);
 };
+//Common API to Start all Server routines
+exports.start = function()
+{
+  setTimeout(startThreads, 0);
+}
 
+//Request parser
 function parseRequest(req,res)
 {
   console.log("*************************************************")
@@ -27,4 +33,11 @@ function parseRequest(req,res)
   console.log("indexController.js | parseRequest() | jessica does not understand this");
   if(req.body.response_url)//Not validating URL here
     utility.sendResponseToRedirectURL(req.body.response_url,"jessica does not understand this");
+}
+
+//Server routines
+function startThreads()
+{
+  var threadController = require('./threadController')
+  threadController.initialize();
 }
