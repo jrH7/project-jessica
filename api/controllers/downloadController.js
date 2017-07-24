@@ -12,6 +12,10 @@ var downloaderConstants = {
   userFolderName:'sanchit',
   downloadCommand:'youtube-dl --download-archive -----ARCHIVE------.txt --no-post-overwrites -ciwx --audio-format mp3 -o "%(title)s.%(ext)s" '
 };
+
+var commonUtility = require('../common/utility');
+var stringFormat = require('string-format');
+
 exports.downloadVideo = function(req,res){
   var utility = require('../common/utility');
   var status = validateRequest(req);
@@ -21,17 +25,17 @@ exports.downloadVideo = function(req,res){
     status = this.downloadVideoFromCommand(req.body.text,{});
     if("success" == status){
       console.log("downloadController.js | downloadVideo() | download success for URL | " +req.body.text);
-      utility.sendResponseToRedirectURL(req.body.response_url,"jessica executed /download "+req.body.text);
+      utility.sendResponseToRedirectURL(req.body.response_url,stringFormat(commonUtility.constants.slackMessages.videoDownloadComplete,req.body.text));
     }
     else{
       console.log("downloadController.js | downloadVideo() | download failed for URL | " +req.body.text+" | error | "+status);
-      utility.sendResponseToRedirectURL(req.body.response_url,"jessica failed to execute /download "+req.body.text);
+      utility.sendResponseToRedirectURL(req.body.response_url,stringFormat(commonUtility.constants.slackMessages.videoDownloadFailed,req.body.text));
     }
   }
   else {
     console.log("downloadController.js | downloadVideo() | jessica failed to validate /download command | " + status);;
     if(validateURL(req.body.response_url) && validateURL(req.body.text))
-      utility.sendResponseToRedirectURL(req.body.response_url,"jessica failed to validate /download command | " + status);
+      utility.sendResponseToRedirectURL(req.body.response_url,stringFormat(commonUtility.constants.slackMessages.videoDownloadURLValidationFailure,req.body.text));
   }
 };
 exports.downloaderError = function(req,res){

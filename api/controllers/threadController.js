@@ -1,25 +1,21 @@
 'user strict';
 
-var threadConstants = {
-  time_sec:1000,
-  time_min:60*1000,
-  time_hr:60*60*1000,
-  time_day:24*60*60*1000
-};
+var commonUtility = require('../common/utility');
+
 var threads = [
   {
       "label":"youtubeDownloaderThread",
-      "interval":threadConstants.time_day,
-      "metadata":{
-        playlistURL:"https://www.youtube.com/playlist?list=PLU5LjflYqkmbqtsvtg3giHfmZkgo2Iqzu"
-      },
+      "interval":commonUtility.constants.time.time_day,
+      "metadata":{},
       "callback":function(threadObj)
       {
-        console.log("threadController.js | " + threadObj.label + " API | Downloading youtube playlist");
         var downloadController = require('../controllers/downloadController');
+
+        console.log("threadController.js | " + threadObj.label + " API | Downloading youtube playlist");
         var responseObj={};
-        console.log("threadController.js | " + threadObj.label + " API | Download Response: " + downloadController.downloadVideoFromCommand(threadObj.metadata.playlistURL,responseObj));
+        console.log("threadController.js | " + threadObj.label + " API | Download Response: " + downloadController.downloadVideoFromCommand(commonUtility.constants.urls.youtubePlaylistURL,responseObj));
         //clearInterval(threadObj.id);
+        commonUtility.sendResponseToRedirectURL(commonUtility.constants.urls.slackWebHookURL,commonUtility.constants.slackMessages.playlistDownloadComplete);
       }
   }
   ,{}
