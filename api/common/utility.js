@@ -27,8 +27,30 @@ exports.sendResponseToRedirectURL = function(url,message)
   })
 }
 
+exports.validateRequest = function(req)
+{
+  if( !req.body.token || exports.constants.token != req.body.token )
+  {
+    return "Invalid token";
+  }
+  if( !req.body.user_name|| exports.constants.user_names.indexOf(req.body.user_name.toLowerCase()) == -1 )
+  {
+    return "Invalid userName";
+  }
+  return "success"
+}
+
+
+exports.validateURL = function(url)
+{
+  //TODO: Write Code to validateURL
+  return "success";
+}
 exports.constants =
 {
+  "token": "guk3piUy7vNFuFNxEucxUC8j",
+  "user_names": ['sanchithanda'],
+
   "urls":
   {
     "slackWebHookURL":"https://hooks.slack.com/services/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",
@@ -46,6 +68,26 @@ exports.constants =
     "playlistDownloadComplete": "I have downloaded your playlist. Enjoy :D - J",
     "videoDownloadComplete": "Your ({}) has been downloaded! - J",
     "videoDownloadFailed": "OOPs! Something went wrong in download of ({}) - J",
-    "videoDownloadURLValidationFailure":"OOPs! Your url params seem wrong - J"
-  }
+    "videoDownloadURLValidationFailure":"OOPs! Your url params seem wrong - J",
+    "threadKillDone":"({}) has been terminated! - J"
+  },
+  "controllers":
+  [
+    {
+     id:"downloadController",
+     //REQUEST PARAMS
+     commands:['/download'],
+
+     //Internal Commands
+     makeDirectoryCommand:'mkdir -p ~/Desktop/Songs/',
+     changeDirectoryCommand:'cd ~/Desktop/Songs/',
+     userFolderName:'sanchit',
+     downloadCommand:'youtube-dl --download-archive -----ARCHIVE------.txt --no-post-overwrites -ciwx --audio-format mp3 -o "%(title)s.%(ext)s" '
+   },
+   {
+     id:"threadController",
+     //REQUEST PARAMS
+     commands:['/kill']
+   }
+  ]
 };
