@@ -25,7 +25,7 @@ exports.download = function(req,res){
   }
   else {
     console.log("downloadController.js | download() | jessica failed to validate /download command | " + status);;
-    if(validateURL(req.body.response_url) && validateURL(req.body.text))
+    if(commonUtility.validateURL(req.body.response_url) && commonUtility.validateURL(req.body.text))
       commonUtility.sendResponseToRedirectURL(req.body.response_url,stringFormat(commonUtility.constants.slackMessages.videoDownloadURLValidationFailure,req.body.text));
   }
 };
@@ -38,9 +38,15 @@ exports.downloadVideoFromCommand = function(url,responseObj)
   {
     var execSync = require('child_process').execSync;
 
-    var cmd = commonUtility.constants.controllers[exports.controllerID].makeDirectoryCommand + commonUtility.constants.controllers[exports.controllerID].userFolderName;
-    cmd = cmd + ";"+ commonUtility.constants.controllers[exports.controllerID].changeDirectoryCommand + commonUtility.constants.controllers[exports.controllerID].userFolderName;
-    cmd = cmd +";"+commonUtility.constants.controllers[exports.controllerID].downloadCommand + url;
+    //WIN
+    var cmd = commonUtility.constants.controllers[exports.controllerID].makeDirectoryCommand;
+    cmd = cmd +" && "+commonUtility.constants.controllers[exports.controllerID].downloadCommand + url;
+
+    /*MAC
+    var cmd = commonUtility.constants.controllers[exports.controllerID].makeDirectoryCommand;
+    //cmd = cmd + ";"+ commonUtility.constants.controllers[exports.controllerID].changeDirectoryCommand;
+    //cmd = cmd +";"+commonUtility.constants.controllers[exports.controllerID].downloadCommand + url;
+    */
 
     responseObj.sysOut = execSync(cmd);
   } catch (e) {
@@ -66,7 +72,7 @@ function validateDownloadCommand(req)
   status  = commonUtility.validateURL(req.body.response_url);
   if( !req.body.response_url || status != "success")
   {
-    return "Invalid URL";
+    return "Invalid Response URL";
   }
   return "success";
 }

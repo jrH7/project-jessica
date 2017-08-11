@@ -32,7 +32,7 @@ exports.initialize = function(id){
     if( threads[i] && threads[i].callback )
     {
       //Lets call the threads once
-      //threads[i].callback(threads[i]);
+      threads[i].callback(threads[i]);
       var id = setInterval(threads[i].callback, threads[i].interval,threads[i]);
       threads[i].id = id;//Storing the ID back
     }
