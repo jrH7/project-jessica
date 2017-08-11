@@ -21,7 +21,6 @@ exports.sendResponseToRedirectURL = function(url,message)
         console.log("utility.js | sendResponseToRedirectURL() | client acknowledged the message");
       }
       else {
-        console.log(response.statusCode);
         console.log("utility.js | sendResponseToRedirectURL() | client didn't acknowledged the message");
       }
   })
@@ -78,11 +77,17 @@ exports.constants =
      //REQUEST PARAMS
      commands:['/download'],
 
-     //Internal Commands
-     makeDirectoryCommand:'mkdir -p ~/Desktop/Songs/',
-     changeDirectoryCommand:'cd ~/Desktop/Songs/',
+     //Internal Commands:WIN
+     makeDirectoryCommand:'(if not exist "%UserProfile%\\Desktop\\Files\\Songs" mkdir "%UserProfile%\\Desktop\\Files\\Songs")',
+     downloadCommand:'..\\..\\imports\\win\\youtube-dl.exe --download-archive "%UserProfile%\\Desktop\\Files\\Songs\\-----ARCHIVE------.txt" --no-post-overwrites -ciwx --audio-format mp3 -o "%UserProfile%\\Desktop\\Files\\Songs\\%(title)s.%(ext)s" ',
+
+     //MAC
+     //makeDirectoryCommand:'mkdir -p ~/Desktop/Songs/',
+     //changeDirectoryCommand:'cd ~/Desktop/Songs/',
+     //downloadCommand:'youtube-dl --download-archive -----ARCHIVE------.txt --no-post-overwrites -ciwx --audio-format mp3 -o "%(title)s.%(ext)s" '
+
      userFolderName:'sanchit',
-     downloadCommand:'youtube-dl --download-archive -----ARCHIVE------.txt --no-post-overwrites -ciwx --audio-format mp3 -o "%(title)s.%(ext)s" '
+
    },
    {
      id:"threadController",
