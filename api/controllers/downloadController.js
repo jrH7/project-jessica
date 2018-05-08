@@ -38,15 +38,19 @@ exports.downloadVideoFromCommand = function(url,responseObj)
   {
     var execSync = require('child_process').execSync;
 
-    //WIN
-    var cmd = commonUtility.constants.controllers[exports.controllerID].makeDirectoryCommand;
-    cmd = cmd +" && "+commonUtility.constants.controllers[exports.controllerID].downloadCommand + url;
-
-    /*MAC
-    var cmd = commonUtility.constants.controllers[exports.controllerID].makeDirectoryCommand;
-    //cmd = cmd + ";"+ commonUtility.constants.controllers[exports.controllerID].changeDirectoryCommand;
-    //cmd = cmd +";"+commonUtility.constants.controllers[exports.controllerID].downloadCommand + url;
-    */
+    if(process.platform === 'darwin')
+    {
+        //MAC
+        var cmd = commonUtility.constants.controllers[exports.controllerID].commands_mac.makeDirectoryCommand;
+        cmd = cmd + ";"+ commonUtility.constants.controllers[exports.controllerID].commands_mac.changeDirectoryCommand;
+        cmd = cmd +";"+commonUtility.constants.controllers[exports.controllerID].commands_mac.downloadCommand + url;
+    }
+    else
+    {
+      //WIN
+      var cmd = commonUtility.constants.controllers[exports.controllerID].commands_win.makeDirectoryCommand;
+      cmd = cmd +" && "+commonUtility.constants.controllers[exports.controllerID].commands_win.downloadCommand + url;
+    }
 
     responseObj.sysOut = execSync(cmd);
   } catch (e) {

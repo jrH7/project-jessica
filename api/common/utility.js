@@ -78,16 +78,19 @@ exports.constants =
      commands:['/download'],
 
      //Internal Commands:WIN
-     makeDirectoryCommand:'(if not exist "%UserProfile%\\Desktop\\Files\\Songs" mkdir "%UserProfile%\\Desktop\\Files\\Songs")',
-     downloadCommand:'..\\..\\imports\\win\\youtube-dl.exe --download-archive "%UserProfile%\\Desktop\\Files\\Songs\\-----ARCHIVE------.txt" --no-post-overwrites -ciwx --audio-format mp3 -o "%UserProfile%\\Desktop\\Files\\Songs\\%(title)s.%(ext)s" ',
-
-     //MAC
-     //makeDirectoryCommand:'mkdir -p ~/Desktop/Songs/',
-     //changeDirectoryCommand:'cd ~/Desktop/Songs/',
-     //downloadCommand:'youtube-dl --download-archive -----ARCHIVE------.txt --no-post-overwrites -ciwx --audio-format mp3 -o "%(title)s.%(ext)s" '
+     commands_win:
+     {
+       makeDirectoryCommand:'(if not exist "%UserProfile%\\Desktop\\Files\\Songs" mkdir "%UserProfile%\\Desktop\\Files\\Songs")',
+       downloadCommand:'..\\..\\imports\\win\\youtube-dl.exe --download-archive "%UserProfile%\\Desktop\\Files\\Songs\\-----ARCHIVE------.txt" --no-post-overwrites -ciwx --audio-format mp3 -o "%UserProfile%\\Desktop\\Files\\Songs\\%(title)s.%(ext)s" ',
+     },
+     commands_mac:
+     {
+       makeDirectoryCommand:'mkdir -p ~/Desktop/Songs/',
+       changeDirectoryCommand:'cd ~/Desktop/Songs/',
+       downloadCommand:'youtube-dl --download-archive -----ARCHIVE------.txt --no-post-overwrites -ciwx --audio-format mp3 --audio-quality 0 -o "%(title)s.%(ext)s" '
+     },
 
      userFolderName:'sanchit',
-
    },
    {
      id:"threadController",
